@@ -9,9 +9,23 @@
 import SwiftUI
 
 struct ContentView: View {
+  @ObservedObject var requestManager = SpeedRequest()
+
     var body: some View {
-        Text("Hello, World!")
-    }
+        guard let speed = requestManager.speed else {
+          return AnyView(
+          VStack {
+            Text("Speed test")
+            Button(action: {
+              self.requestManager.sendRequest()
+            }) {
+              Text("Begin")
+            }
+          })
+        }
+
+        return AnyView(Text("SPEED: \(speed)"))
+      }
 }
 
 struct ContentView_Previews: PreviewProvider {
