@@ -12,7 +12,7 @@ import Combine
 extension URLSession {
 
   final class DownloadTaskSubscription<SubscriberType: Subscriber>: Subscription where
-    SubscriberType.Input == (url: URL, response: URLResponse),
+    SubscriberType.Input == (bytesReceived: Int?, requestedURL: URL),
     SubscriberType.Failure == URLError
   {
     init(subscriber: SubscriberType, session: URLSession, request: URLRequest) {
@@ -30,30 +30,30 @@ extension URLSession {
         return
       }
       self.task = self.session.downloadTask(with: request) { [weak self] url, response, error in
+        self?.observation?.invalidate()
         if let error = error as? URLError {
           self?.subscriber?.receive(completion: .failure(error))
           return
         }
-        guard let response = response else {
+        guard let _ = response else {
           self?.subscriber?.receive(completion: .failure(URLError(.badServerResponse)))
           return
         }
-        guard let url = url else {
+        guard let _ = url else {
           self?.subscriber?.receive(completion: .failure(URLError(.badURL)))
           return
         }
-        do {
-          let cacheDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-          let fileUrl = cacheDir.appendingPathComponent((UUID().uuidString))
-          try FileManager.default.moveItem(atPath: url.path, toPath: fileUrl.path)
-          _ = self?.subscriber?.receive((url: fileUrl, response: response))
-          self?.subscriber?.receive(completion: .finished)
-        }
-        catch {
-          self?.subscriber?.receive(completion: .failure(URLError(.cannotCreateFile)))
-        }
+        self?.subscriber?.receive(completion: .finished)
       }
       self.task.resume()
+
+      observation = self.task.progress.observe(\.fractionCompleted) { [weak self] (progress, _) in
+        guard let requestURL = self?.request.url else {
+          self?.subscriber?.receive(completion: .failure(URLError(.badURL)))
+          return
+        }
+        let _ = self?.subscriber?.receive((bytesReceived: progress.fileCompletedCount, requestedURL: requestURL))
+      }
     }
 
     /// Cancel method
@@ -67,5 +67,6 @@ extension URLSession {
     private weak var session: URLSession!
     private var request: URLRequest!
     private var task: URLSessionDownloadTask!
+    private var observation: NSKeyValueObservation?
   }
 }

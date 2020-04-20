@@ -31,7 +31,7 @@ extension URLSession {
 
   public struct DownloadTaskPublisher: Publisher {
 
-    public typealias Output = (url: URL, response: URLResponse)
+    public typealias Output = (bytesReceived: Int?, requestedURL: URL)
     public typealias Failure = URLError
 
     public let request: URLRequest

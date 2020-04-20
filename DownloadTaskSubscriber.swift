@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 final class DownloadTaskSubscriber: Subscriber {
-    typealias Input = (url: URL, response: URLResponse)
+    typealias Input = (bytesReceived: Int?, requestedURL: URL)
     typealias Failure = URLError
 
     var subscription: Subscription?
@@ -21,7 +21,7 @@ final class DownloadTaskSubscriber: Subscriber {
     }
 
     func receive(_ input: Input) -> Subscribers.Demand {
-        print("Subscriber value \(input.url)")
+        print("Subscriber value \(input)")
         return .unlimited
     }
 
