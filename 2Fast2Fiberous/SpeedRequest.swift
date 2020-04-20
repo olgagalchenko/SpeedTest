@@ -21,21 +21,19 @@ class SpeedRequest: ObservableObject {
       .sink(receiveCompletion: { (completion) in
         switch completion {
         case .failure(let error):
-          print(error)
+          print("error: \(error)")
         case .finished:
-          print("Finished")
+          print("finished!")
         }
-        print("printing error: \(completion)")
-      }) { (viewModel) in
-        print("viewModel: \(viewModel)")
+      }) { targets in
+        let subscribers = targets.map { target -> () in
+          URLSession.shared
+//            .dataTaskPublisher(for: target.url)
+            .downloadTaskPublisher(for: target.url)
+            .subscribe(DownloadTaskSubscriber())
+        }
+        print(subscribers)
         self.speed = 500
     }
-    //(with: url) { [weak self] (data, response, error) in
-//      guard let data = data else { return }
-//      print(data)
-//      print(response)
-//      print(error)
-//      self?.speed = 500
-//    }.resume()
   }
 }

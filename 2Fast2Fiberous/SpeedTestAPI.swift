@@ -37,6 +37,10 @@ extension SpeedTestAPI {
       .receive(on: DispatchQueue.main)
       .eraseToAnyPublisher()
   }
+
+  static func timeTarget(_ target: Target) {
+//    return URLSession.shared.dataTaskPublisher(for: target.url)
+  }
 }
 
 struct Response: Codable {
