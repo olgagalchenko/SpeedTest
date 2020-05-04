@@ -12,7 +12,7 @@ import Combine
 extension URLSession {
 
   final class DownloadTaskSubscription<SubscriberType: Subscriber>: Subscription where
-    SubscriberType.Input == (bytesReceived: Int?, requestedURL: URL),
+    SubscriberType.Input == (completedCount: Int64, totalCount: Int64, requestedURL: URL),
     SubscriberType.Failure == URLError
   {
     init(subscriber: SubscriberType, session: URLSession, request: URLRequest) {
@@ -52,7 +52,10 @@ extension URLSession {
           self?.subscriber?.receive(completion: .failure(URLError(.badURL)))
           return
         }
-        let _ = self?.subscriber?.receive((bytesReceived: progress.fileCompletedCount, requestedURL: requestURL))
+        let _ = self?.subscriber?.receive((
+          completedCount: self?.task.countOfBytesReceived ?? 0,
+          totalCount: self?.task.countOfBytesExpectedToReceive ?? 0,
+          requestedURL: requestURL))
       }
     }
 

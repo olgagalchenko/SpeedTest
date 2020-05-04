@@ -47,6 +47,6 @@ struct Response: Codable {
   let targets: [Target]
 }
 
-struct Target: Codable {
+public struct Target: Codable {
   let url: URL
 }

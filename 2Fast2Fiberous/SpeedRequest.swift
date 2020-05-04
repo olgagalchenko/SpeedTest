@@ -12,12 +12,16 @@ import Combine
 
 class SpeedRequest: ObservableObject {
   @Published var speed: Float?
-  var sub: AnyCancellable?
+  var cancellables: [AnyCancellable] = []
 
   func sendRequest() {
     let publisher = SpeedTestAPI.getTargets(token: "YXNkZmFzZGxmbnNkYWZoYXNkZmhrYWxm")
 
-    sub = publisher
+    publisher
+      .flatMap({ targetList in
+        SpeedyMcSpeedface(targetList: targetList).subject
+      })
+      .receive(on: DispatchQueue.main)
       .sink(receiveCompletion: { (completion) in
         switch completion {
         case .failure(let error):
@@ -25,15 +29,10 @@ class SpeedRequest: ObservableObject {
         case .finished:
           print("finished!")
         }
-      }) { targets in
-        let subscribers = targets.map { target -> () in
-          URLSession.shared
-//            .dataTaskPublisher(for: target.url)
-            .downloadTaskPublisher(for: target.url)
-            .subscribe(DownloadTaskSubscriber())
-        }
-        print(subscribers)
-        self.speed = 500
+      }) { currentSpeed in
+        print(currentSpeed)
+        self.speed = Float(currentSpeed)
     }
+  .store(in: &cancellables)
   }
 }

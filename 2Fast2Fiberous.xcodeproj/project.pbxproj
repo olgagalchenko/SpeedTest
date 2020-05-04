@@ -20,6 +20,7 @@
 		7702FC32244D0658003594A6 /* URLSession+DownloadPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7702FC31244D0658003594A6 /* URLSession+DownloadPublisher.swift */; };
 		7702FC34244D06A2003594A6 /* URLSession+DownloadSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7702FC33244D06A2003594A6 /* URLSession+DownloadSubscription.swift */; };
 		7702FC36244D0D0D003594A6 /* DownloadTaskSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7702FC35244D0D0D003594A6 /* DownloadTaskSubscriber.swift */; };
+		7702FC38245F8394003594A6 /* SpeedPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7702FC37245F8394003594A6 /* SpeedPublisher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		7702FC31244D0658003594A6 /* URLSession+DownloadPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+DownloadPublisher.swift"; sourceTree = "<group>"; };
 		7702FC33244D06A2003594A6 /* URLSession+DownloadSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+DownloadSubscription.swift"; sourceTree = "<group>"; };
 		7702FC35244D0D0D003594A6 /* DownloadTaskSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTaskSubscriber.swift; sourceTree = "<group>"; };
+		7702FC37245F8394003594A6 /* SpeedPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedPublisher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				7702FC0B244CCAA8003594A6 /* Info.plist */,
 				7702FC05244CCAA8003594A6 /* Preview Content */,
 				7702FC2D244CD55F003594A6 /* SpeedRequest.swift */,
+				7702FC37245F8394003594A6 /* SpeedPublisher.swift */,
 				7702FC2F244CE9A9003594A6 /* SpeedTestAPI.swift */,
 				7702FC31244D0658003594A6 /* URLSession+DownloadPublisher.swift */,
 				7702FC33244D06A2003594A6 /* URLSession+DownloadSubscription.swift */,
@@ -283,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7702FBFE244CCAA7003594A6 /* AppDelegate.swift in Sources */,
+				7702FC38245F8394003594A6 /* SpeedPublisher.swift in Sources */,
 				7702FC32244D0658003594A6 /* URLSession+DownloadPublisher.swift in Sources */,
 				7702FC30244CE9A9003594A6 /* SpeedTestAPI.swift in Sources */,
 				7702FC00244CCAA7003594A6 /* SceneDelegate.swift in Sources */,
