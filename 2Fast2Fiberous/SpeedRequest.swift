@@ -19,7 +19,7 @@ class SpeedRequest: ObservableObject {
 
     publisher
       .flatMap({ targetList in
-        SpeedyMcSpeedface(targetList: targetList).subject
+        CurrentSpeedPublisher(targetList: targetList).subject
       })
       .receive(on: DispatchQueue.main)
       .sink(receiveCompletion: { (completion) in
