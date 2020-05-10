@@ -35,11 +35,9 @@ public class CurrentSpeedPublisher {
           case .finished:
             self.subject.send(completion: .finished)
           }
-        }) { (completedCount: Int64, totalCount: Int64, requestedURL: URL) in
+        }) { (completedCount: Int64, requestedURL: URL) in
           self.completed[requestedURL] = completedCount
-          let elapsedTime = Date().timeIntervalSince(self.time)
-          let currentSpeed = Double(self.totalCompleted() * 8)/elapsedTime/1000000
-          self.subject.send(currentSpeed)
+          self.subject.send(self.currentSpeed)
       }
       .store(in: &cancellables)
     }
@@ -51,9 +49,14 @@ public class CurrentSpeedPublisher {
   private var completed: [URL: Int64] = [:]
   private var time = Date()
 
-  private func totalCompleted() -> Int64 {
+  private var totalDownloadedBytes: Int64 {
     completed.reduce(0) { (result, completedForURL) -> Int64 in
       return result + completedForURL.value
     }
+  }
+
+  private var currentSpeed: Double {
+    let elapsedTime = Date().timeIntervalSince(self.time)
+    return Double(totalDownloadedBytes * 8)/1000000/elapsedTime
   }
 }
